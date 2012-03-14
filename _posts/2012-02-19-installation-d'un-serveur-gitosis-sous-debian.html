@@ -1,0 +1,115 @@
+--- 
+layout: post
+title: Installation d'un serveur gitosis sous Debian
+tags: 
+- Divers
+status: draft
+type: post
+published: false
+meta: 
+  _edit_last: "2"
+  _yoast_wpseo_focuskw: ""
+  _yoast_wpseo_title: ""
+  _yoast_wpseo_metadesc: ""
+  _yoast_wpseo_meta-robots-noindex: "0"
+  _yoast_wpseo_meta-robots-nofollow: "0"
+  _yoast_wpseo_meta-robots-adv: none
+  _yoast_wpseo_canonical: ""
+  _yoast_wpseo_redirect: ""
+---
+<code lang="bash">
+nico@largo:~$ sudo aptitude install gitosis
+The following NEW packages will be installed:
+gitosis python-pkg-resources{a} python-setuptools{a}
+0 packages upgraded, 3 newly installed, 0 to remove and 45 not upgraded.
+Need to get 0 B/326 kB of archives. After unpacking 1,622 kB will be used.
+Do you want to continue? [Y/n/?]
+Preconfiguring packages ...
+Selecting previously deselected package python-pkg-resources.
+(Reading database ... 151923 files and directories currently installed.)
+Unpacking python-pkg-resources (from .../python-pkg-resources_0.6.14-4_all.deb) ...
+Selecting previously deselected package python-setuptools.
+Unpacking python-setuptools (from .../python-setuptools_0.6.14-4_all.deb) ...
+Selecting previously deselected package gitosis.
+Unpacking gitosis (from .../gitosis_0.2+20090917-11_all.deb) ...
+Setting up python-pkg-resources (0.6.14-4) ...
+Setting up python-setuptools (0.6.14-4) ...
+Setting up gitosis (0.2+20090917-11) ...</code>
+
+Please read /usr/share/doc/gitosis/README.Debian
+for information about how to use gitosis.
+Processing triggers for python-support ...
+[master 93d3f65] committing changes in /etc after apt run
+Author: nico
+8 files changed, 9 insertions(+), 3 deletions(-)
+
+<code lang="bash">
+nico@largo:~$ sudo dpkg-reconfigure gitosis
+Initialized empty Git repository in /var/lib/git/repositories/gitosis-admin.git/
+Reinitialized existing Git repository in /var/lib/git/repositories/gitosis-admin.git/</code>
+
+Please read /usr/share/doc/gitosis/README.Debian
+for information about how to use gitosis.
+
+<code lang="bash">
+nico@largo:~$ grep git /etc/passwd
+gitosis:x:149:152:git repository hosting,,,:/srv/gitosis:/bin/sh
+git:x:150:153:git repository hosting,,,:/var/lib/git:/bin/sh
+</code>
+
+<code lang="bash">
+nico@largo:~$ sudo aptitude remove gitosis
+The following packages will be REMOVED:
+gitosis python-pkg-resources{u} python-setuptools{u}
+0 packages upgraded, 0 newly installed, 3 to remove and 45 not upgraded.
+Need to get 0 B of archives. After unpacking 1,622 kB will be freed.
+Do you want to continue? [Y/n/?]
+[master 75bc045] saving uncommitted changes in /etc prior to apt run
+Author: nico
+8 files changed, 9 insertions(+), 1 deletions(-)
+(Reading database ... 152151 files and directories currently installed.)
+Removing gitosis ...
+Removing user `gitosis' ...
+Warning: group `gitosis' has no more members.
+Done.
+Removing python-setuptools ...
+Removing python-pkg-resources ...
+Processing triggers for python-support ...
+[master 4f1d3f4] committing changes in /etc after apt run
+Author: nico
+7 files changed, 3 insertions(+), 5 deletions(-)
+</code>
+
+<code lang="bash">
+nico@largo:~$ sudo aptitude install gitosis
+The following NEW packages will be installed:
+gitosis python-pkg-resources{a} python-setuptools{a}
+0 packages upgraded, 3 newly installed, 0 to remove and 45 not upgraded.
+Need to get 0 B/326 kB of archives. After unpacking 1,622 kB will be used.
+Do you want to continue? [Y/n/?]
+Preconfiguring packages ...
+Selecting previously deselected package python-pkg-resources.
+(Reading database ... 151923 files and directories currently installed.)
+Unpacking python-pkg-resources (from .../python-pkg-resources_0.6.14-4_all.deb) ...
+Selecting previously deselected package python-setuptools.
+Unpacking python-setuptools (from .../python-setuptools_0.6.14-4_all.deb) ...
+Selecting previously deselected package gitosis.
+Unpacking gitosis (from .../gitosis_0.2+20090917-11_all.deb) ...
+Setting up python-pkg-resources (0.6.14-4) ...
+Setting up python-setuptools (0.6.14-4) ...
+Setting up gitosis (0.2+20090917-11) ...
+gitosis user (git) already exists, doing nothing.</code>
+
+gitosis directory (/var/lib/git) already exists, doing nothing.
+Make sure the directory is recursively owned by the correct user account (git).
+
+Please read /usr/share/doc/gitosis/README.Debian
+for information about how to use gitosis.
+Processing triggers for python-support ...
+
+nico@largo:~$ grep git /etc/passwd ; find /srv/
+git:x:150:153:git repository hosting,,,:/var/lib/git:/bin/sh
+/srv/
+/srv/tftp
+/srv/gitosis
+/srv/gitosis/git

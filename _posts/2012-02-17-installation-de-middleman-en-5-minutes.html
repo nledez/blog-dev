@@ -1,0 +1,73 @@
+--- 
+layout: post
+title: Installation de Middleman en 5 minutes
+tags: 
+- Ruby
+status: draft
+type: post
+published: false
+meta: 
+  _edit_last: "2"
+  _yoast_wpseo_focuskw: ""
+  _yoast_wpseo_title: ""
+  _yoast_wpseo_metadesc: ""
+  _yoast_wpseo_meta-robots-noindex: "0"
+  _yoast_wpseo_meta-robots-nofollow: "0"
+  _yoast_wpseo_meta-robots-adv: none
+  _yoast_wpseo_canonical: ""
+  _yoast_wpseo_redirect: ""
+---
+Cette fois ci comment installer <a href="http://middlemanapp.com/" title="Site de Middleman">Middleman</a> en 5 minutes chrono :
+<ul>
+	<li>Créer un environnement RVM</li>
+	<li>Trouver la version de Middleman à installer</li>
+	<li>Cloner Middleman</li>
+	<li>Installer les bonnes dépendances</li>
+	<li>Installer la bonne version de Middleman</li>
+</ul>
+Pourquoi tout ça ? Quand j'ai voulu l'installer, Middleman m'a demandé d'installer plein de dépendances et Gem n'a pas su le faire tout seul avec les bonnes versions donc :
+<!--more-->
+<h3>Créer un environnement RVM</h3>
+<code lang="bash">
+$ rvm use 1.9.3@middleman --create
+</code>
+<h3>Trouver la version de Middleman à installer</h3>
+<code lang="bash">
+$ gem search --remote middleman
+</code>
+
+Qui va donner :
+*** REMOTE GEMS ***
+
+beans-middleman (1.0.14)
+guard-middleman (0.1.0)
+huge-boilerplate-middleman (0.3)
+middleman (<strong>2.0.14</strong> ruby x86-mingw32)
+middleman-blog (0.1.5)
+[...]
+
+Noter la version 2.0.14 dans notre cas.
+
+<h3>Cloner Middleman</h3>
+<code lang="bash">
+$ git clone https://github.com/middleman/middleman.git
+$ cd middleman
+$ git checkout v2.0.14
+</code>
+
+<h3>Installer les bonnes dépendances</h3>
+<code lang="bash">
+$ bundle
+</code>
+
+Si <a href="http://gembundler.com/" title="Site de Bundler">Bundler</a> n'est pas installé :
+<code lang="bash">
+$ gem install --no-ri --no-rdoc bundler
+</code>
+
+<h3>Installer la bonne version de Middleman</h3>
+<code lang="bash">
+$ gem install middleman --version 2.0.14
+</code>
+
+Et voilà ! Votre version de Middleman toute prête à être utilisée.

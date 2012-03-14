@@ -1,0 +1,12 @@
+--- 
+layout: post
+title: "Tips #3 - Show only CPU from a prtdiag / show lines between two paterns"
+tags: 
+- Tips
+status: publish
+type: post
+published: true
+meta: {}
+
+---
+prtdiag | awk 'BEGIN{$CPU=0} /^===/{$CPU=0} /^===.* CPUs/{$CPU=1} $CPU==1{print $0}'

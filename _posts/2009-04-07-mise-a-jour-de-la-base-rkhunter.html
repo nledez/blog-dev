@@ -1,0 +1,21 @@
+--- 
+layout: post
+title: "Mise \xC3\xA0 jour de la base rkhunter"
+tags: 
+- Divers
+- "S\xC3\xA9curit\xC3\xA9"
+status: publish
+type: post
+published: true
+meta: 
+  _edit_last: "2"
+---
+<code>Warning: The file properties have changed:
+File: /usr/bin/curl
+Current inode: 1738    Stored inode: 285619
+Current file modification time: 1236689477
+Stored file modification time : 1230384786</code>
+
+Et un "rkhunter --update" ne met à jour que les bases listant les rootkit. Pour mettre à jour la base locale, il faut faire :
+
+<code>rkhunter --propupd</code>

@@ -1,0 +1,29 @@
+--- 
+layout: post
+title: "Tout pour g\xC3\xA9rer les timestamp - All for timestamp"
+tags: 
+- howto
+- Informatique
+- perl
+- shell
+- Tips
+- tips
+- unix
+status: publish
+type: post
+published: true
+meta: 
+  _edit_last: "2"
+  _wp_old_slug: ""
+---
+Afficher le timestamp courant / print current timestamp:
+<code lang="bash">
+perl -e 'print time;'
+date +%s
+</code>
+
+Le timespamp de la veille / Yesterday timestamp:
+<code lang="bash">
+perl -e 'print time-1*86400;'
+date -d '1 day ago' +%s # Work only with up-to-date date such as Linux
+</code>

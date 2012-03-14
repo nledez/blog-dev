@@ -1,0 +1,129 @@
+--- 
+layout: post
+title: ""
+tags: 
+- Divers
+status: draft
+type: post
+published: false
+meta: 
+  _edit_last: "2"
+---
+   23  cat /proc/mdstat
+   24  sudo pvscan
+   25  sudo pvscan
+   26  sudo su -
+   27  sudo mdadm --create --verbose /dev/md0 --level=1 --raid-devices=2 /dev/sdc1
+   28  sudo mdadm --create --verbose /dev/md0 --level=1 --raid-devices=2 /dev/sdc1 --degraded
+   29  sudo mdadm --create --verbose /dev/md0 --level=1 --raid-devices=2 /dev/sdc1 missing
+   30  mount
+   31  sudo mdadm --create --verbose /dev/md0 --level=1 --raid-devices=2 /dev/vg-donnees1/lvdonnees1 missing
+   32  sudo mdadm --create --verbose /dev/md0 --level=1 --raid-devices=2 /dev/vg-donnees1/lvdonnees1 missing
+   33  cat /proc/mdstat
+   34  mkdir /tmp/toto
+   35  sudo mount /dev/md0 /tmp/toto/
+   36  ls /tmp/toto/
+   37  cat /proc/mdstat
+   38  history
+   39  sudo pvscan
+   40  sudo format /dev/sdc
+   41  sudo fdisk /dev/sdc
+   42  sudo mdadm --create --verbose /dev/md1 --level=1 --raid-devices=2 /dev/sdc1 missing
+   43  sudo pvscan
+   44  sudo vgdelete vg-donnees2
+   45  sudo su -
+   46  sudo vgremove vg-donnees2
+   47  sudo mdadm --create --verbose /dev/md1 --level=1 --raid-devices=2 /dev/sdc1 missing
+   48  cat /proc/mdstat
+   49  sudo pvcreate /dev/md1
+   50  sudo vgscan
+   51  sudo vgcreate vg1 /dev/md1
+   52  sudo lvscan
+   53  df -h
+   54  sudo mkdir /tmp/toto2
+   55  sudo lvcreate --name lvdonnees1 -L 100G vg1
+   56  mount
+   57  sudo mkfs.ext4 /dev/vg1/lvdonnees1
+   58  sudo lvscan
+   59  sudo mount /dev/vg1/lvdonnees1 /tmp/toto2
+   60  cd /tmp/toto
+   61  ls
+   62  sudo rsync -a --progress . ../toto2/
+   63  sudo rsync -a . ../toto2/
+   64  time sudo rsync -a . ../toto2/
+   65  ls
+   66  sudo pvscan
+   67  time sudo rsync -a . ../toto2/
+   68  cd ..
+   69  sudo umount /tmp/toto*
+   70  rmdir /tmp/toto*
+   71  sudo rmdir /tmp/toto*
+   72  ls
+   73  cd
+   74  sudo vi /etc/fstab
+   75  sudo lvscan
+   76  sudo vi /etc/fstab
+   77  sudo mount -a
+   78  df -h
+   79  ls /sharepoint
+   80  ls
+   81  sudo pvscan
+   82  sudo vgremove vg-donnees1
+   83  sudo pvscan
+   84  sudo cat /proc/mdstat
+   85  man mdadm
+   86  man mdadm
+   87  sudo mdadm --fail /dev/md0 /dev/sdb1
+   88  sudo mdadm --fail /dev/md0 /dev/vg-donnees1/lvdonnees1
+   89  sudo mdadm --remove /dev/md0 /dev/vg-donnees1/lvdonnees1
+   90  sudo mdadm --fail /dev/md0 /dev/vg-donnees1/lvdonnees1
+   91  sudo mdadm --remove /dev/md0 /dev/vg-donnees1/lvdonnees1
+   92  sudo cat /proc/mdstat
+   93  sudo mdadm --remove /dev/md0
+   94  sudo mdadm --remove /dev/md0
+   95  sudo cat /proc/mdstat
+   96  mdadm --query /dev/md0
+   97  sudo mdadm --query /dev/md0
+   98  sudo mdadm --query /dev/md0 --detail
+   99  sudo mdadm --query --detail /dev/md0
+  100  sudo mdadm -S /dev/md0
+  101  sudo cat /proc/mdstat
+  102  sudo fdsik /dev/sdc
+  103  sudo fdisk /dev/sdc
+  104  sudo ffdisk /dev/sdc
+  105  sudo sfdisk /dev/sdc
+  106  sfdisk -d /dev/sdb1
+  107  sudo sfdisk -d /dev/sdb1
+  108  sudo fdisk /dev/sdb1
+  109  sudo fdisk /dev/sdb
+  110  sudo fdisk /dev/sdc
+  111  sudo sfdisk -d /dev/sdb
+  112  sudo sfdisk -d /dev/sdc
+  113  sudo sfdisk -d /dev/sdc | sudo sfdisk /dev/sdb
+  114  sudo fdisk -l /dev/sdc
+  115  sudo fdisk -l /dev/sdb
+  116  sudo sfdisk -d /dev/sdc | sudo sfdisk /dev/sdb
+  117  sudo pvsc
+  118  sudo pvscan
+  119  sudo vgremove vg-donnees1
+  120  sudo pvscan
+  121  sudo sfdisk -d /dev/sdc | sudo sfdisk /dev/sdb
+  122  sudo mdadm --zero-superblock /dev/sdb
+  123  sudo mdadm --zero-superblock /dev/sdb
+  124  sudo fdisk -l /dev/sdb
+  125  sudo mdadm --zero-superblock /dev/sdb
+  126  sudo mdadm /dev/md0 -r /dev/sdb
+  127  sudo dd if=/dev/zero of=/dev/sdb bs=1M count=1024
+  128  sudo fdisk -l /dev/sdb
+  129  sudo sfdisk -d /dev/sdc | sudo sfdisk /dev/sdb
+  130  sudo fdisk -l /dev/sdb
+  131  sudo cat /proc/mdstat
+  132  sudo mdadm --zero-superblock /dev/sdb
+  133  sudo partprobe
+  134  sudo mdadm --add /dev/md1 /dev/sdb1
+  135  cat /proc/mdstat
+  136  cat /proc/mdstat
+  137  cat /proc/mdstat
+  138  history
+  139  sudo mdadm --query --detail /dev/md0
+  140  sudo mdadm --query --detail /dev/md1

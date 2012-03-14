@@ -1,0 +1,20 @@
+--- 
+layout: post
+title: Remplacement de /etc/rc?.d/* sous Solaris 1x
+tags: 
+- Tips
+status: publish
+type: post
+published: true
+meta: 
+  _edit_last: "2"
+---
+Pour activer un service au démarage de la machine :
+<code>
+svcadm enable un_service
+</code>
+
+Pour avoir les informations sur le service
+<code>
+svcs -l le_service
+</code>

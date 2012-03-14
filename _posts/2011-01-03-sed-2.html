@@ -1,0 +1,74 @@
+--- 
+layout: post
+title: "sed #2"
+tags: 
+- howto
+- regexp
+- script
+- sed
+- Tips
+- tips
+status: publish
+type: post
+published: true
+meta: 
+  _wp_old_slug: ""
+  _edit_last: "2"
+---
+Comment utiliser sed pour remplacer ça / Howto replace this with sed:
+<code lang="bash">
+ns01:x:11062:11062::/home/ns01:/bin/sh
+:x:11062:11062::/home/ns01:/bin/sh
+</code>
+
+En ça / To this:
+<code lang="bash">
+ns01:x:11062:11062:::0:0
+:x:11062:11062:d::0:0
+</code>
+
+Taper les lignes de codes / use there command line:
+<code lang="bash">
+(echo ns01:x:11062:11062::/home/ns01:/bin/sh; \
+echo :x:11062:11062:d:/home/ns01:/bin/sh ) \
+| sed -r 's/^(([^:]*:){5}).*/\1:0:0/'
+</code>
+
+Explications :
+s/ pour lancer la recherche
+-r pour passer en expression régulière avancée
+^ pour commencer en début de chaine
+[^:]*: pour chercher tout ce qu'il peut y avoir avant un ":" y compris rien
+grouper [^:]*: entre des () suivit de {5} pour avoir 5 occurrences du pattern
+le .*$ à la fin de la chaine pour l'enlever dans la substitution
+
+/ pour passer à la partie de ce qu'il faut mettre à la place
+\1 pour récupérer, la première partie qui match entre ()
+Dans l'exemple
+<code>
+ns01:x:11062:11062::
+:x:11062:11062:d:
+</code>
+et :0:0 pour l'ajouter à la fin de la chaine ;)
+
+Explanation:
+s/ start the search
+-r use extended regular expressions
+^ start on the strings beginning
+[^:]*: search anything excluding ":" including nothing
+group [^:]*: in () followed by {5} to have 5 instance of pattern
+the .*$ at the end was here to remove the rest
+
+/ to pass at the remplacement
+\1 to get first matching part was betwen ()
+In this exemple
+<code lang="bash">
+ns01:x:11062:11062::
+:x:11062:11062:d:
+</code>
+and :0:0 for add it at the end ;)
+
+Maintenant, vous pouvez utiliser la commande sed / now you can use the sed command:
+<code lang="bash">
+sed -r 's/^(([^:]*:){5}).*/\1:0:0/' /etc/passwd
+</code>

@@ -1,0 +1,21 @@
+--- 
+layout: post
+title: "ROR #1 - Installer la base"
+tags: 
+- Divers
+- howto
+- Rails
+- rails
+status: publish
+type: post
+published: true
+meta: 
+  _edit_last: "2"
+  _wp_old_slug: ""
+---
+Installer les éléments de base pour développer en Rails :
+<code lang="bash">
+echo 'rvm --create use default@rails > /dev/null' > .rvmrc
+cd ; cd -
+gem install rails rspec-rails cucumber-rails capybara web-app-theme
+</code>

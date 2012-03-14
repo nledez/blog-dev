@@ -1,0 +1,23 @@
+--- 
+layout: post
+title: "service imap pid 32188 in BUSY state: terminated abnormally"
+tags: 
+- Informatique
+- OpenSource
+status: publish
+type: post
+published: true
+meta: 
+  _edit_last: "2"
+---
+We have this error on my IMAP server :
+<code>
+cyrus/master[32170]: service imap pid 32188 in BUSY state: terminated abnormally
+</code>
+
+We have a Debian sid with cyrus21 &amp; openldap authentification.
+
+I solve this with a :
+<code>
+chmod 644 /etc/libnss-ldap.conf
+</code>
