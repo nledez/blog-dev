@@ -1,0 +1,11 @@
+Afficher le timestamp courant / print current timestamp:
+<code lang="bash">
+perl -e 'print time;'
+date +%s
+</code>
+
+Le timespamp de la veille / Yesterday timestamp:
+<code lang="bash">
+perl -e 'print time-1*86400;'
+date -d '1 day ago' +%s # Work only with up-to-date date such as Linux
+</code>

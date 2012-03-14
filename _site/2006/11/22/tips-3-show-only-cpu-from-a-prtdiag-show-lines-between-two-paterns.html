@@ -1,0 +1,1 @@
+prtdiag | awk 'BEGIN{$CPU=0} /^===/{$CPU=0} /^===.* CPUs/{$CPU=1} $CPU==1{print $0}'

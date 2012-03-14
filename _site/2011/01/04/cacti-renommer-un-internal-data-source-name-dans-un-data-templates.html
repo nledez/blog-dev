@@ -1,0 +1,16 @@
+Ne pas renommer comme un bourrin, c'est utilisé dans les RRA (fichier rrd).
+
+1- chercher dans "Data Source" celles qui correspondent au template
+2- ouvrir toutes les occurrences (s'il n'y en a pas faire 6 et 8 )
+2a - ouvrir un graphique qui affiche cette valeur
+3- noter les "Data Source Path" (&lt;path_rra&gt;/blablabla.rrd
+4- se positionner dans &lt;path_rra&gt;
+5- lancer "for f in fichier1.rrd fichier2.rrd;do rrdtool info $f|grep -E '^ds';done" qui doit afficher :
+ds[ancien nom]
+6- préparer dans une fenêtre la modification du "Data Templates" avec son nouveau "Internal Data Source Name" (ne pas valider)
+7- lancer "for f in fichier1.rrd fichier2.rrd;do rrdtool tune $f -r ancien_nom:nouveau_nom;done"
+7a- relancer le 5 pour valider le changement
+8- valider la fenêtre "Data Templates" avec son nouveau "Internal Data Source Name"
+8b- recharger la fenêtre du 2a
+
+Et voila

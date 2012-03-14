@@ -1,0 +1,2 @@
+for p in `ps -o pid -u auser`;do if [[ "$p" != "PID" ]]; then echo kill $p ; fi ; done
+# Change auser to your user (not root ;) & change "echo kill" by "kill" or "kill  -9" ;)

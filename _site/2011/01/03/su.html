@@ -1,0 +1,29 @@
+Comment faire lancer par un utilisateur une suite de commandes dans un script exécuté en temps que root ?
+Howto launch commands by user in script executed by root.
+
+Par exemple, je veux que l'utilisateur "oracle" exécute ces commandes :
+For exemple I would like to execute there as "oracle":
+<code lang="bash">
+for i in azer qsdf fghj zaer fg ery qsjjy  azern ; do
+        touch /tmp/tib/titi.$$.$i
+done
+</code>
+
+Il suffit de l'encapsuler dans :
+I just need to put commands between:
+<code lang="bash">
+cat << "EOF" | su - user
+EOF
+</code>
+
+Par exemple :
+For example:
+<code lang="bash">
+cat << "EOF" | su - oracle
+for i in azer qsdf fghj zaer fg ery qsjjy  azern ; do
+        touch /tmp/tib/titi.$$.$i
+done
+EOF
+</code>
+
+Et voilà ! / And voilà !

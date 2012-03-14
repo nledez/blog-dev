@@ -1,0 +1,90 @@
+Toutes les étapes pour avoir une machine avec un Pow et Zsh qui torchent ! :
+<ul>
+	<li>Installer Pow</li>
+	<li>Installer OH MY ZSHELL!</li>
+	<li>Modification de la configuration par défaut</li>
+	<li>Et son utilisation</li>
+	<li>Bonus</li>
+</ul>
+<!--more-->
+<h3>Installer Pow</h3>
+<a title="Site de Pow" href="http://pow.cx/">Extrait du site de Pow</a>
+C'est le plus dur :p
+<code lang="bash">
+$ curl get.pow.cx | sh
+</code>
+
+Maintenant une connexion sur un site http://&lt;app&gt;.dev/ doit fonctionner.
+Pour une nouvelle application, le mode opératoire est simple :
+<code lang="bash">
+$ cd ~/.pow
+$ ln -s /path/to/myapp
+</code>
+
+Pff trop la flemme...
+
+Pour gagner du temps, on va installer ZSH, avec le plugin "quivabien" :
+<h3>Installer OH MY ZSHELL!</h3>
+<a title="Site de oh-my-zsh" href="https://github.com/robbyrussell/oh-my-zsh">Extrait du site oh-my-zsh</a>
+<code lang="bash">
+$ curl -L https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh | sh
+</code>
+
+Si jamais votre Shell par défaut est écrasé (en général bash). Vous pouvez revenir en arrière :
+<code lang="bash">
+chsh -s /bin/bash
+</code>
+<h3>Modification de la configuration par défaut</h3>
+Modifier la ligne dans le fichier ~/.zshrc :
+<code lang="bash">
+plugins=(git brew bundler gem heroku osx pow rails3 redis-cli textmate)
+</code>
+C'est surtout le plugin pow qu'il faut mettre, les autres sont ceux que j'utilise. Choisissez vos armes.
+<h3>Et son utilisation</h3>
+Si l'on regarde le contenu du fichier ~/.oh-my-zsh/plugins/pow/pow.plugin.zsh, on apprend qu'il y a 3 commandes à disposition :
+<ul>
+	<li>powit qui permet de "d'installer" un nouveau site</li>
+	<li>kapow qui permet de redémarrer une application. Avec en argument le nom du vhost ou sans argument dans le répertoire de l'application</li>
+	<li>kaput (puts) qui permet d'afficher les logs de l'application</li>
+</ul>
+<h3>Bonus</h3>
+Je ne me souviens jamais des URL à taper. Et j'ai trop la (flemme|pas envie de faire peur à mon client), j'aimerais donc avoir l'adresse http://index.dev/ qui me donne la liste de toutes mes applications.
+
+On peut utiliser dans ce cas l'application <a title="Site de Pow-index" href="https://github.com/marutanm/Pow-index">Pow-index</a>.
+
+Si vous n'avez pas ça :
+<code lang="bash">
+% gem search --remote pow-index                                                                                        !6441
+
+*** REMOTE GEMS ***
+
+pow-index (0.0.4)
+</code>
+Regardez plus bas (la version git).
+
+Sans <a title="Site de RVM" href="https://rvm.beginrescueend.com/">RVM</a> :
+<code lang="bash">
+$ gem install pow-index
+$ pow-index index
+</code>
+
+Avec <a title="Site de RVM" href="https://rvm.beginrescueend.com/">RVM</a> :
+<code lang="bash">
+$ rvm use default@pow-index --create
+$ gem install pow-index
+$ pow-index index
+$ gem which pow-index
+$ cd $(gem which pow-index | sed 's#lib/pow-index.rb$##')
+$ echo 'rvm use default@pow-index' &gt; .rvmrc
+</code>
+
+J'ai fais quelques modifications suplémentaires dans un fork sur Github, <a title="@marutanm" href="https://twitter.com/#!/marutanm">@marutanm</a> répond rapidement aux pull-request il devrait donc y avoir une version 0.0.5. En attendant :
+<code lang="bash">
+$ git clone https://nledez@github.com/nledez/Pow-index.git
+$ cd Pow-index
+$ ln -s $(pwd) ~/.pow/index
+</code>
+
+Vous pouvez aussi remplacer index par default. Dans ce cas, n'importe quelle URL qui se termine en .dev seras redirigé vers celui-là.
+
+Et voilà plus qu'à apprendre coder comme des malades :)

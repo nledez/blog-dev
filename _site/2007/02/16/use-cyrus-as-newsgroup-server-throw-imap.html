@@ -1,0 +1,94 @@
+If you have a <a href="http://cyrusimap.web.cmu.edu/">cyrus-imap</a> was installed, you can use it as "nntp reader" (all examples are with a Debian Etch).
+My problem is : I have many computer where I read my mail, blog (rss) and now newsgroup.
+
+For my mails, I use a IMAP server (<a href="http://cyrusimap.web.cmu.edu/">cyrus-imap</a>), for my rss I use <a href="http://fofredux.sf.net/" title="fofredux">FoFRedux</a> and now I search a solution for read newsgroup.
+
+Now with <a href="http://cyrusimap.web.cmu.edu/">cyrus-imap</a> you can feed newsgroup in NNTP :
+
+<code>apt-get install cyrus-nntpd-2.2</code>
+
+In a directory (such as home directory). You can launch it as normal user. It's to get tools scripts
+apt-get source cyrus-imapd-2.2
+
+<code>vi /etc/cyrus.conf</code>
+
+uncomment nntp lines
+
+<code>vi /etc/imapd.conf</code>
+
+add :
+
+<code>newsprefix: news</code>
+
+Restart cyrus
+
+get mknewsgroups script
+<code>
+wget ftp://ftp.isc.org/usenet/CONFIG/active</code>
+<code>
+./mknewsgroups -n -u cyrus -w fr.comp.text.tex -a "anyone +p news write" localhost
+</code>
+
+you get this :
+<code>
+reading configure file...
+you are using "news" as your news prefix.
+done
+C01 CREATE "news.fr.comp.text.tex"
+S01 SETACL "news.fr.comp.text.tex" news write
+S02 SETACL "news.fr.comp.text.tex" anyone +p
+</code>
+If you think it's ok :
+<code>
+./mknewsgroups -u cyrus -w fr.comp.text.tex -a "anyone +p news write" localhost</code>
+
+<code>
+cat /usr/local/bin/cyrus-fetchnews
+#! /bin/sh
+
+CONF="/etc/news-cyrus-abo"
+
+env &gt; /tmp/cyfetch
+
+if [ ! -f ${CONF} ]; then
+echo "${CONF} missing..."
+exit 1
+fi
+
+if [[ ${LOGNAME} != "cyrus" ]]; then
+echo "Must be run as cyrus User"
+exit 2
+fi
+
+source ${CONF}
+
+for ng in ${ABO_GROUPS}; do
+/usr/lib/cyrus/bin/fetchnews ${OPTIONS} -w ${ng} ${SERVER}
+done
+cat /etc/news-cyrus-abo
+SERVER="news.free.fr"
+OPTIONS="-n -y"
+ABO_GROUPS="fr.comp.text.tex comp.text.tex"
+
+cat /etc/cron.d/cyr-newsgroup
+MAILTO=root
+
+*/5 * * * * cyrus /usr/local/bin/cyrus-fetchnews
+0 0 * * * cyrus /usr/sbin/cyr_expire -E 60 -v
+To delete old articles :
+<code>
+cyradm -u cyrus localhost</code>
+
+mboxcfg news expire 60
+
+&amp; to check it :
+
+localhost.localdomain&gt; info news
+{news}:
+expire: 60
+lastpop:
+lastupdate: 16-Feb-2007 09:46:58 +0100
+partition: default
+size: 0
+
+It's done ;)  &amp; now you can view newsgroup in you favorite IMAP client.

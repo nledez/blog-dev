@@ -1,0 +1,48 @@
+Dans les entête du fichier .tex :
+<code lang="latex">
+% Pour l'index
+makeindex
+%index{Titre a placer dans l'index}
+
+% Pour le glossaire
+usepackage[french]{nomencl}
+makenomenclature
+renewcommand*{nomname}{Glossaire}
+%nomenclature{Mot}{Definition.}
+</code>
+
+Dans le corps du fichier .tex :
+
+<code lang="latex">
+addcontentsline{toc}{section}{Glossaire}
+printnomenclature
+
+addcontentsline{toc}{section}{Index}
+printindex
+</code>
+
+Et le fichier pour générer le PDF :
+<code lang="bash">
+#!/bin/sh
+# $Revision: 1.2 $
+# Nicolas Ledez
+#
+# DESCRIPTION:
+# USAGE:
+# LICENSE: GPL
+
+DOC="ReverseEngineering"
+TEX="${DOC}.tex"
+LOG="make.log"
+
+date > ${LOG}
+
+texi2pdf ${TEX} &&
+makeindex -s index.ist ${DOC} &&
+makeindex "${DOC}.nlo" -s "nomencl.ist" -o "${DOC}.nls"  &&
+texi2pdf ${TEX} &&
+texi2pdf ${TEX} &&
+open ${DOC}.pdf >> ${LOG}
+
+date >> ${LOG}
+</code>

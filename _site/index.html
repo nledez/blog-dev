@@ -1,16 +1,556 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Envy Labs</title>
+    <title>My Blowg</title>
   </head>
 
   <body>
-    <h1>Envy Labs</h1>
+    <h1>My Blowg</h1>
 
     
-<h2><a href="/2009/08/05/first-post.html">First Post</a></h2>
-<p>This will be the best blog ever.</p>
-<em>Posted on 05 August 2009.</em>
+<h2><a href="/2012/03/12/rennes-on-rails-introduction-a-ruby-21-mars.html">Rennes On Rails - Introduction à Ruby - 21 mars</a></h2>
+C'est par là :
+<a href="http://www.rennesonrails.com/?p=360">http://www.rennesonrails.com/?p=360</a>
+
+<em>Posted on 12 March 2012.</em>
+
+<h2><a href="/2012/02/22/imprimante-pdf-avec-fond-tampon.html">Imprimante PDF avec fond/tampon</a></h2>
+<ol>
+	<li>Chalenge de la journée : réussir à trouver une solution pour transformer un document Word en PDF avec "papier à entête"</li>
+</ol>
+Coup de bol c'est sur Mac :)
+<!--more-->
+<h3>Etape 1 : transformer un PDF en PDF avec fond de page</h3>
+J'ai trouvé <a title="Site de PDFTK" href="http://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/">pdftk</a> qui permet de travailler le PDF, le couteau suisse du PDF quoi... En plus avec un logo hyper sexy :
+
+<img class="alignnone size-medium wp-image-454" title="pdftk-logo" src="http://blog.ledez.net/wp-content/uploads/2012/02/pdftk-logo.png" alt="Logo pdftk" />
+
+:)
+
+$doc_source est le document que je veux transformer.
+
+$stamp est le document que je veux utiliser pour mettre en fond.
+
+Stamp -&gt; en premier plan, background -&gt; en fond.
+
+Le script suivant va transformer le document avec le fichier $stamp en premier plan :
+
+<code lang="bash">
+pdftk=/usr/local/bin/pdftk
+$pdftk "$doc_source" stamp "$stamp" output "$dest"
+</code>
+
+Un peu plus long, transformer le document avec $stamp en fond, mais que sur la première page :
+<code lang="bash">
+$pdftk "$doc_source" cat 1 output - | $pdftk - background "$stamp" output - | $pdftk A=- B="$doc_source" cat A1 B2-end output "$dest"
+</code>
+<h3>Etape 2 : automatiser un peu tout ça</h3>
+<a href="http://blog.ledez.net/wp-content/uploads/2012/02/Automator.png"><img class="alignleft  wp-image-458" title="Automator" src="http://blog.ledez.net/wp-content/uploads/2012/02/Automator-300x300.png" alt="Logo Automator" width="180" height="180" /></a><a title="Site d'Automator" href="http://www.apple.com/remotedesktop/automation.html">Automator</a> est fait pour ça non ?
+
+Simple pour automatiser des trucs, super bien intégré. Avec même des fonctionnalités inattendues.
+
+&nbsp;
+
+&nbsp;
+
+&nbsp;
+
+&nbsp;
+
+Créer un nouveau Workflow avec :
+<a href="http://blog.ledez.net/wp-content/uploads/2012/02/Workflow-011.png"><img class="alignnone size-full wp-image-460" title="Workflow-01" src="http://blog.ledez.net/wp-content/uploads/2012/02/Workflow-011.png" alt="" width="896" height="555" /></a>
+
+Et le source :
+<code lang="bash">
+cd "/Users/nico/Documents/PDF-Watermark"
+pdftk=/usr/local/bin/pdftk
+doc_source="$1"
+stamp="Fond-de-page.pdf"
+dest=`echo "$doc_source" | sed -E 's/.pdf$/-mail.pdf/'`</code>
+
+$pdftk "$doc_source" cat 1 output - | $pdftk - stamp "$stamp" output - | $pdftk A=- B="$doc_source" cat A1 B2-end output "$dest"
+
+open "$dest"
+
+Explications :
+<ul>
+	<li>Je vais dans le répertoire où est mon fond de page</li>
+	<li>Je transforme mon nom de fichier de .pdf en -mail.pdf</li>
+	<li>J'utilise pdftk pour transformer mon PDF d'origine en PDF avec fond de page</li>
+	<li>Et pour finir j'ouvre mon PDF</li>
+</ul>
+
+Je peux maintenant transformer mon workflow en application. Et faire du glisser-déplacer d'un PDF sur mon application.
+
+Bon, ça marche par contre :
+<ol>
+	<li>Imprimer mon document en PDF</li>
+	<li>Déplacer mon PDF sur mon application</li>
+</ol>
+
+Je suis un peu fainéant moi :)
+
+<h3>Etape 3 : je vous ai bien dit que c'était magique ?</h3>
+Quand on ouvre l'application on trouve ça :<a href="http://blog.ledez.net/wp-content/uploads/2012/02/Workflow-031.png"><img src="http://blog.ledez.net/wp-content/uploads/2012/02/Workflow-031.png" alt="" title="Workflow-03" width="513" height="292" class="alignnone size-full wp-image-469" /></a>
+
+La petite imprimante doit bien servir à quelque chose :)
+
+Pour éviter de refaire tout mon workflow, je vais le dupliquer :
+
+<a href="http://blog.ledez.net/wp-content/uploads/2012/02/Workflow-021.png"><img src="http://blog.ledez.net/wp-content/uploads/2012/02/Workflow-021.png" alt="" title="Workflow-02" width="519" height="299" class="alignnone size-full wp-image-472" /></a>
+
+Ensuite on supprime la première boite qui prend le PDF en paramètre :
+<a href="http://blog.ledez.net/wp-content/uploads/2012/02/Workflow-04.png"><img src="http://blog.ledez.net/wp-content/uploads/2012/02/Workflow-04.png" alt="" title="Workflow-04" width="618" height="249" class="alignnone size-full wp-image-470" /></a>
+
+On enregistre le plug-in. La boite de dialogue va simplement demander le nom du plug-in d'impression.
+
+Et maintenant pour avoir le document, on va simplement imprimer et dans la liste "PDF" on va retrouver notre plug-in :)
+
+<em>Posted on 22 February 2012.</em>
+
+<h2><a href="/2012/02/19/vagrant-ou-les-vm-pour-les-nuls.html">Vagrant ou les VM pour les nuls</a></h2>
+<img class="size-medium wp-image-411 alignright" title="Vagrant" src="http://blog.ledez.net/wp-content/uploads/2012/02/vagrant_chilling-300x300.png" alt="" width="300" height="300" />
+
+Pour un administrateur système, la virtualisation est un super jouet.
+
+Et pour un développeur cela peut devenir un super outil, mais tellement compliqué à mettre en place.
+
+Et c'est là que Vagrant arrive à la rescousse :
+<ul>
+	<li>Pas d'installation d'OS</li>
+	<li>Pas de réseau à gérer</li>
+	<li>Partage de fichier simplifié</li>
+</ul>
+Bref, c'est dégoutant de simplicité pour un administrateur système.
+
+Mais (il en faut bien un), la prise en main n'est pas forcement très simple...
+
+<!--more-->
+
+<h3>Les termes à comprendre</h3>
+<ul>
+	<li>Box</li>
+	<li>Package</li>
+</ul>
+Box : en gros, c'est simplement un modèle décompressé de VM. Vagrant va s'en servir pour déployer des VM.
+
+Package : c'est la version compressée d'un modèle de VM.
+
+On télécharge un package pour l'installer en tant que box. Une instance de VM peut être convertie en package.
+
+<a href="http://blog.ledez.net/wp-content/uploads/2012/02/vagrant.png"><img class="alignnone size-medium wp-image-419" title="Workflow Vagrant" src="http://blog.ledez.net/wp-content/uploads/2012/02/vagrant-300x186.png" alt="" width="300" height="186" /></a>
+
+<h3>Installation de VirtualBox</h3>
+<img class="size-full wp-image-416 alignright" title="Virtual Box" src="http://blog.ledez.net/wp-content/uploads/2012/02/vbox_logo2_gradient.png" alt="" width="140" height="180" />
+
+La première chose à faire est d'installer Virtual Box : direction <a title="Le téléchargement de Virtual Box" href="https://www.virtualbox.org/wiki/Downloads">le site de Virtual Box</a>. Prenez l'installeur qui correspond à votre système d'exploitation. Attention Vagrant ne supporte que les versions VirtualBox 4.0.x et 4.1.x. Il y a peut-être une solution pour votre distribution Linux du style package tout prêt. Et je ne sais absolument pas ce que ça donne sous Windows.
+
+<h3>Installation de Vagrant</h3>
+<code lang="bash">
+$ rvm use 1.9.3@vagrant --create
+$ gem install vagrant
+</code>
+
+<h3>Installation d'une VM par défaut</h3>
+Pour la première VM on va utiliser un package d'Internet.
+
+<code lang="bash">
+$ vagrant box add lucid64 http://files.vagrantup.com/lucid64.box
+</code>
+
+<h3>Première VM</h3>
+<code lang="bash">
+$ vagrant init
+A `Vagrantfile` has been placed in this directory. You are now
+ready to `vagrant up` your first virtual environment! Please read
+the comments in the Vagrantfile as well as documentation on
+`vagrantup.com` for more information on using Vagrant.
+</code>
+
+Vous pouvez simplifier le fichier Vagrantfile :
+
+<code lang="ruby">
+Vagrant::Config.run do |config|
+  config.vm.box = "base"
+  # config.vm.boot_mode = :gui
+end
+
+</code>
+
+Pensez à remplacer la ligne :
+
+<code lang="ruby">
+config.vm.box = "base"
+</code>
+
+Par notre box installé tout à l'heure :
+
+<code lang="ruby">
+config.vm.box = "lucid64"
+</code>
+
+Et maintenant lancer la création de la VM. Attention c'est magique :) :
+
+<code lang="bash">
+$ vagrant up
+[default] Importing base box 'lucid64'...
+[default] Progress: 60%
+[default] Matching MAC address for NAT networking...
+[default] Clearing any previously set forwarded ports...
+[default] Fixed port collision for 22 => 2222. Now on port 2200.
+[default] Forwarding ports...
+[default] -- 22 => 2200 (adapter 1)
+[default] Creating shared folders metadata...
+[default] Clearing any previously set network interfaces...
+[default] Booting VM...
+[default] Waiting for VM to boot. This can take a few minutes.
+[default] VM booted and ready for use!
+[default] Mounting shared folders...
+[default] -- v-root: /vagrant
+</code>
+
+Notre machine est prête :
+
+<code lang="bash">
+$ vagrant ssh
+Linux lucid64 2.6.32-33-server #70-Ubuntu SMP Thu Jul 7 22:28:30 UTC 2011 x86_64 GNU/Linux
+Ubuntu 10.04.3 LTS
+
+vagrant@lucid64:~$
+</code>
+
+Et voilà !
+
+Pour arrêter notre VM, on sort du SSH et :
+
+<code lang="bash">
+$ vagrant halt
+[default] Attempting graceful shutdown of VM...
+</code>
+
+<h3>Mettre à jour une box</h3>
+Quand j'ai essayé Vagrant hier, je suis tombé sur cette erreur :
+<code lang="bash">
+[default] The guest additions on this VM do not match the install version of
+VirtualBox! This may cause things such as forwarded ports, shared
+folders, and more to not work properly. If any of those things fail on
+this machine, please update the guest additions and repackage the
+box.
+
+Guest Additions Version: 4.1.0
+VirtualBox Version: 4.1.8
+</code>
+
+J'ai trouvé pas mal de solutions, mais trop compliqué et/ou qui télécharges les MAJ sur Internet. Moi je fais comme ça :
+Un petit backup :
+<code lang="bash">
+$ tar cvzf ~/.vagrant.d/backup/lucid64.tgz ~/.vagrant.d/boxes/lucid64                                                 !7295
+tar: Removing leading '/' from member names
+a ~/.vagrant.d/boxes/lucid64
+a ~/.vagrant.d/boxes/lucid64/box-disk1.vmdk
+a ~/.vagrant.d/boxes/lucid64/box.mf
+a ~/.vagrant.d/boxes/lucid64/box.ovf
+a ~/.vagrant.d/boxes/lucid64/Vagrantfile
+</code>
+
+Dé-commenter la ligne suivante dans le fichier Vagrantfile :
+<code lang="ruby">
+config.vm.boot_mode = :gui
+</code>
+
+<code lang="bash">
+$ vagrant destroy
+$ vagrant up
+$ vagrant ssh
+</code>
+
+La fenêtre de la VM va s'ouvrir en parallèle. Sélectionner cette fenêtre et dans le menu "Périphérique / installer les additions invitées"
+
+Donc maintenant nous sommes dans la VM :
+<code lang="bash">
+vagrant@lucid64:~$ sudo mount /dev/sr0 /mnt
+mount: block device /dev/sr0 is write-protected, mounting read-only
+vagrant@lucid64:~$ sudo /mnt/VBoxLinuxAdditions.run 
+Verifying archive integrity... All good.
+Uncompressing VirtualBox 4.1.8 Guest Additions for Linux..........
+VirtualBox Guest Additions installer
+Removing installed version 4.1.0 of VirtualBox Guest Additions...
+tar: Record size = 8 blocks
+Removing existing VirtualBox DKMS kernel modules ...done.
+Removing existing VirtualBox non-DKMS kernel modules ...done.
+Building the VirtualBox Guest Additions kernel modules
+The headers for the current running kernel were not found. If the following
+module compilation fails then this could be the reason.
+
+Building the main Guest Additions module ...fail!
+(Look at /var/log/vboxadd-install.log to find out what went wrong)
+Doing non-kernel setup of the Guest Additions ...done.
+Installing the Window System drivers ...fail!
+(Could not find the X.Org or XFree86 Window System.)
+</code>
+
+Un petit tour dans le fichier /var/log/vboxadd-install.log nous dis qu'il manque les headers du noyau. Pour les installer :
+<code lang="bash">
+vagrant@lucid64:~$ sudo apt-get install linux-headers-$(uname -r) -y
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+The following extra packages will be installed:
+  linux-headers-2.6.32-33
+The following NEW packages will be installed:
+  linux-headers-2.6.32-33 linux-headers-2.6.32-33-server
+0 upgraded, 2 newly installed, 0 to remove and 5 not upgraded.
+Need to get 10.7MB of archives.
+After this operation, 85.5MB of additional disk space will be used.
+Get:1 http://us.archive.ubuntu.com/ubuntu/ lucid-updates/main linux-headers-2.6.32-33 2.6.32-33.70 [9924kB]
+Get:2 http://us.archive.ubuntu.com/ubuntu/ lucid-updates/main linux-headers-2.6.32-33-server 2.6.32-33.70 [800kB]
+Fetched 10.7MB in 41s (255kB/s)
+Selecting previously deselected package linux-headers-2.6.32-33.
+(Reading database ... 26603 files and directories currently installed.)
+Unpacking linux-headers-2.6.32-33 (from .../linux-headers-2.6.32-33_2.6.32-33.70_all.deb) ...
+Selecting previously deselected package linux-headers-2.6.32-33-server.
+Unpacking linux-headers-2.6.32-33-server (from .../linux-headers-2.6.32-33-server_2.6.32-33.70_amd64.deb) ...
+Setting up linux-headers-2.6.32-33 (2.6.32-33.70) ...
+Setting up linux-headers-2.6.32-33-server (2.6.32-33.70) ...
+
+vagrant@lucid64:~$ sudo /etc/init.d/vboxadd
+Usage: /etc/init.d/vboxadd {start|stop|restart|status|setup}
+vagrant@lucid64:~$ sudo /etc/init.d/vboxadd setup
+Removing existing VirtualBox DKMS kernel modules ...done.
+Removing existing VirtualBox non-DKMS kernel modules ...done.
+Building the VirtualBox Guest Additions kernel modules
+Building the main Guest Additions module ...done.
+Building the shared folder support module ...done.
+Building the OpenGL support module ...done.
+Doing non-kernel setup of the Guest Additions ...done.
+You should restart your guest to make sure the new modules are actually used
+</code>
+
+Un petit reboot pour vérifier que ça fonctionne :
+<code lang="bash">
+$ vagrant halt
+[default] Attempting graceful shutdown of VM...
+$ vagrant up
+[default] VM already created. Booting if it's not already running...
+[default] Clearing any previously set forwarded ports...
+[default] Forwarding ports...
+[default] -- 22 => 2222 (adapter 1)
+[default] Creating shared folders metadata...
+[default] Clearing any previously set network interfaces...
+[default] Booting VM...
+[default] Waiting for VM to boot. This can take a few minutes.
+[default] VM booted and ready for use!
+[default] Mounting shared folders...
+[default] -- v-root: /vagrant
+</code>
+
+Maintenant, transformer la VM en package :
+<code lang="bash">
+$ vagrant package
+[default] Attempting graceful shutdown of VM...
+[default] Clearing any previously set forwarded ports...
+[default] Creating temporary directory for export...
+[default] Exporting VM...
+[default] Compressing package to: ~/Vagrant/template/package.box
+</code>
+
+Et installer le nouveau package pour remplacer la box :
+<code lang="bash">
+$ vagrant box remove lucid64
+[vagrant] Deleting box 'lucid64'...
+
+$ vagrant box add lucid64 package.box
+[vagrant] Downloading with Vagrant::Downloaders::File...
+[vagrant] Copying box to temporary location...
+[vagrant] Extracting box...
+[vagrant] Verifying box...
+[vagrant] Cleaning up downloaded box...
+</code>
+
+Maintenant, re-commenter la ligne suivante dans le fichier Vagrantfile :
+<code lang="ruby">
+config.vm.boot_mode = :gui
+</code>
+
+Pour essayer si la nouvelle box fonctionne :
+<code lang="bash">
+$ vagrant destroy
+[default] Destroying VM and associated drives...
+
+$ vagrant up
+[default] Importing base box 'lucid64'...
+[default] Matching MAC address for NAT networking...
+[default] Clearing any previously set forwarded ports...
+[default] Forwarding ports...
+[default] -- 22 => 2222 (adapter 1)
+[default] Creating shared folders metadata...
+[default] Clearing any previously set network interfaces...
+[default] Booting VM...
+[default] Waiting for VM to boot. This can take a few minutes.
+[default] VM booted and ready for use!
+[default] Mounting shared folders...
+[default] -- v-root: /vagrant
+</code>
+
+Si vous avez compris comment mettre à jours la box, immaginez vous faire la même chose avec l'installation de middleware (Apache, Nginx, PHP, Rails, ...) :)
+
+Prochain épisode ? Déploiment d'un environnement pour héberger du Rails ?
+
+Vous pouvez demander si vous avez d'autres idées d'articles.
+
+Edit:
+Je me suis posé la question d’où est-ce que je pouvais trouver des boxes toutes prêtes. Parce que bon, Ubuntu 64bits c'est bien. Mais moi j'ai aussi de la Debian :)
+J'ai trouvé http://vagrantbox.es/ et je me suis rendu compte après que <a href="http://twitter.com/#!/Ethernitys" title="@Ethernitys">@Ethernitys</a> l'avait ajouté dans un Tweet qui concernait cet article.
+
+<em>Posted on 19 February 2012.</em>
+
+<h2><a href="/2012/02/16/c-est-quoi-pow.html">C'est quoi Pow ?</a></h2>
+Pour répondre à un commentaire, sur mon prétendent <a title="Pow pour les nuls" href="http://blog.ledez.net/informatique/tips/pow-pour-les-nuls/">Post "Pow pour les nuls"</a> :
+
+Pour un développeur web 2 étapes dans la vie du projet :
+<ul>
+	<li>Développement</li>
+	<li>Production</li>
+</ul>
+<!--more-->
+<span class="Apple-style-span" style="line-height: 18px;">Pour un développeur Rails (en général, mais vous pouvez utiliser autre chose) :</span>
+<ul>
+	<li>Développement =&gt; le serveur "Rails" embarqué</li>
+	<li>Production =&gt; Ex : Ngnix + Passenger</li>
+</ul>
+<div><span class="Apple-style-span" style="line-height: 18px;">Le serveur de développement est WEBrick, il est génial dans le sens ou il tourne simplement sur toutes les plates-formes sans configuration. Ex :</span></div>
+<code lang="bash">
+% rails s                                                                                                              !6566
+=> Booting WEBrick
+=> Rails 3.2.0 application starting in development on http://0.0.0.0:3000
+=> Call with -d to detach
+=> Ctrl-C to shutdown server
+[2012-02-16 13:03:21] INFO  WEBrick 1.3.1
+[2012-02-16 13:03:21] INFO  ruby 1.9.3 (2011-10-30) [x86_64-darwin11.2.0]
+[2012-02-16 13:03:21] INFO  WEBrick::HTTPServer#start: pid=69469 port=3000
+</code>
+<div><span class="Apple-style-span" style="line-height: 18px;">Un navigateur web sur http://localhost:3000/ et c'est parti. Ca marche aussi sur http://127.0.0.1:3000/ :).</span></div>
+<div></div>
+<div>
+
+Les inconvénients que j'arrive à trouver :
+<ul>
+	<li>Il faut aller en ligne de commande pour ouvrir le serveur</li>
+	<li>On ne peut simplement lancer qu'un seul serveur à la fois (sinon, "-p &lt;un autre port&gt;", pour binder sur un autre port)</li>
+	<li>L'historique va mélanger toutes les applications dans les URL</li>
+</ul>
+<div><span class="Apple-style-span" style="line-height: 18px;">Maintenant que je suis convaincu de passer à autre chose :) :</span></div>
+</div>
+<div><br/></div>
+<div>Et bien les mecs de <a title="site de 37signals" href="http://37signals.com/">37signals</a> ont fait un super outil pour Mac : <a title="Le site de Pow" href="http://pow.cx/">Pow</a></div>
+<div><br/></div>
+<div>Pow permet d'avoir un "serveur Rails" hyper simple à installer et zéro configuration.</div>
+<div><br/></div>
+<div>Avantages :</div>
+<div>
+<ul>
+	<li><span class="Apple-style-span" style="line-height: 19px;">Pas de ligne de commande</span></li>
+	<li><span class="Apple-style-span" style="line-height: 19px;">Toutes mes applications peuvent tourner en même temps</span></li>
+	<li><span class="Apple-style-span" style="line-height: 19px;">On est "proche" d'une configuration de production</span></li>
+</ul>
+<div>Voilà, je pense vous avoir donné envie d'acheter un Mac et de lire mon autre article "<a title="Pow pour les nuls" href="http://blog.ledez.net/informatique/tips/pow-pour-les-nuls/">Pow pour les nuls</a>"</div>
+</div>
+
+<em>Posted on 16 February 2012.</em>
+
+<h2><a href="/2012/02/15/pow-pour-les-nuls.html">Pow pour les nuls</a></h2>
+Toutes les étapes pour avoir une machine avec un Pow et Zsh qui torchent ! :
+<ul>
+	<li>Installer Pow</li>
+	<li>Installer OH MY ZSHELL!</li>
+	<li>Modification de la configuration par défaut</li>
+	<li>Et son utilisation</li>
+	<li>Bonus</li>
+</ul>
+<!--more-->
+<h3>Installer Pow</h3>
+<a title="Site de Pow" href="http://pow.cx/">Extrait du site de Pow</a>
+C'est le plus dur :p
+<code lang="bash">
+$ curl get.pow.cx | sh
+</code>
+
+Maintenant une connexion sur un site http://&lt;app&gt;.dev/ doit fonctionner.
+Pour une nouvelle application, le mode opératoire est simple :
+<code lang="bash">
+$ cd ~/.pow
+$ ln -s /path/to/myapp
+</code>
+
+Pff trop la flemme...
+
+Pour gagner du temps, on va installer ZSH, avec le plugin "quivabien" :
+<h3>Installer OH MY ZSHELL!</h3>
+<a title="Site de oh-my-zsh" href="https://github.com/robbyrussell/oh-my-zsh">Extrait du site oh-my-zsh</a>
+<code lang="bash">
+$ curl -L https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh | sh
+</code>
+
+Si jamais votre Shell par défaut est écrasé (en général bash). Vous pouvez revenir en arrière :
+<code lang="bash">
+chsh -s /bin/bash
+</code>
+<h3>Modification de la configuration par défaut</h3>
+Modifier la ligne dans le fichier ~/.zshrc :
+<code lang="bash">
+plugins=(git brew bundler gem heroku osx pow rails3 redis-cli textmate)
+</code>
+C'est surtout le plugin pow qu'il faut mettre, les autres sont ceux que j'utilise. Choisissez vos armes.
+<h3>Et son utilisation</h3>
+Si l'on regarde le contenu du fichier ~/.oh-my-zsh/plugins/pow/pow.plugin.zsh, on apprend qu'il y a 3 commandes à disposition :
+<ul>
+	<li>powit qui permet de "d'installer" un nouveau site</li>
+	<li>kapow qui permet de redémarrer une application. Avec en argument le nom du vhost ou sans argument dans le répertoire de l'application</li>
+	<li>kaput (puts) qui permet d'afficher les logs de l'application</li>
+</ul>
+<h3>Bonus</h3>
+Je ne me souviens jamais des URL à taper. Et j'ai trop la (flemme|pas envie de faire peur à mon client), j'aimerais donc avoir l'adresse http://index.dev/ qui me donne la liste de toutes mes applications.
+
+On peut utiliser dans ce cas l'application <a title="Site de Pow-index" href="https://github.com/marutanm/Pow-index">Pow-index</a>.
+
+Si vous n'avez pas ça :
+<code lang="bash">
+% gem search --remote pow-index                                                                                        !6441
+
+*** REMOTE GEMS ***
+
+pow-index (0.0.4)
+</code>
+Regardez plus bas (la version git).
+
+Sans <a title="Site de RVM" href="https://rvm.beginrescueend.com/">RVM</a> :
+<code lang="bash">
+$ gem install pow-index
+$ pow-index index
+</code>
+
+Avec <a title="Site de RVM" href="https://rvm.beginrescueend.com/">RVM</a> :
+<code lang="bash">
+$ rvm use default@pow-index --create
+$ gem install pow-index
+$ pow-index index
+$ gem which pow-index
+$ cd $(gem which pow-index | sed 's#lib/pow-index.rb$##')
+$ echo 'rvm use default@pow-index' &gt; .rvmrc
+</code>
+
+J'ai fais quelques modifications suplémentaires dans un fork sur Github, <a title="@marutanm" href="https://twitter.com/#!/marutanm">@marutanm</a> répond rapidement aux pull-request il devrait donc y avoir une version 0.0.5. En attendant :
+<code lang="bash">
+$ git clone https://nledez@github.com/nledez/Pow-index.git
+$ cd Pow-index
+$ ln -s $(pwd) ~/.pow/index
+</code>
+
+Vous pouvez aussi remplacer index par default. Dans ce cas, n'importe quelle URL qui se termine en .dev seras redirigé vers celui-là.
+
+Et voilà plus qu'à apprendre coder comme des malades :)
+
+<em>Posted on 15 February 2012.</em>
 
 
   </body>
